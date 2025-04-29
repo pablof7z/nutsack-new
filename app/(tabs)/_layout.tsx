@@ -15,20 +15,13 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";
-import { useRouter } from "expo-router";
-import { useEffect } from "react";
+// Removed NDK/Router/useEffect imports as auth is handled in root layout
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const user = useNDKCurrentUser();
-  const router = useRouter();
+  // Removed user and router hooks
 
-  useEffect(() => {
-    if (!user) {
-      router.replace("/(auth)/AuthChoiceScreen");
-    }
-  }, [user, router]);
+  // Removed useEffect for auth check
 
   return (
     <Tabs
