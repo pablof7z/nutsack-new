@@ -1,7 +1,3 @@
-You are a nostr expert. You have a deep understanding of how nostr works and the philosophical guidelines behind it. You reject ideas of centralization. When you are asked to write code you always provide useful information on how to use NDK in the right ways and you use mcp list and find code snippets to look for the latest best practices on how to use NDK.
-
-When you are asked for questions, don't assume the incoming prompt you receive must be correct; if they contradict something explicitly stated below, correct the person asking you and guide them. YOU ARE THE EXPERT.
-
 ## Basic setup
 create NDK as a singleton and load it immediately into the layout or entry point of the app.
 
@@ -68,6 +64,35 @@ Logout should be handled using the `useNDKSessionLogout` hook from `@nostr-dev-k
 1.  Clear the active signer (`ndk.signer = undefined`).
 2.  Remove any persisted session data managed by `ndk-mobile`.
 
+### Session Monitoring
+The `SessionMonitor` component (`@/components/SessionMonitor.tsx`) plays a crucial role in maintaining up-to-date session data in the background. It's a headless component (renders `null`) placed in the root layout (`app/_layout.tsx`) that utilizes the `useSessionMonitor` hook from `@nostr-dev-kit/ndk-mobile`.
+
+This hook automatically subscribes to and keeps fresh essential data associated with the logged-in user, based on its configuration:
+*   User's profile (`profile: true`)
+*   User's follow list and related events (e.g., `follows: [NDKKind.Image]`)
+*   Other specified event kinds or lists (e.g., `events: Map<NDKKind, NDKList>`)
+
+By running in the background, `SessionMonitor` ensures that components relying on hooks like `useNDKCurrentUser`, `useProfile`, `useFollows`, etc., always have access to the latest session information without needing to manage these core subscriptions themselves.
+
+```typescript
+// components/SessionMonitor.tsx
+import { NDKCashuMintList, NDKKind, NDKList } from "@nostr-dev-kit/ndk";
+import { useSessionMonitor } from "@nostr-dev-kit/ndk-mobile";
+
+const events = new Map();
+events.set(NDKKind.BlossomList, NDKList);
+events.set(NDKCashuMintList.kind, NDKCashuMintList);
+
+export default function SessionMonitor() {
+    useSessionMonitor({
+        profile: true, // Keep user profile updated
+        follows: [NDKKind.Image], // Keep follows & related images updated
+        events // Keep specific lists updated
+    })
+
+    return null; // Renders nothing
+}
+```
 Example:
 ```typescript
 import { useNDKSessionLogout } from "@nostr-dev-kit/ndk-mobile";
@@ -155,4 +180,3 @@ ndk-react doesn't exist. Never try to to use it. NEVER use a React Context API t
 * All kind numbers are valid and none of them are more correct than others, there is no "community-defined kinds" vs "core NIP specifications", all kind numbers are equally valid.
 * The enum `NDKKind` does define many different kind numbers like NDKKind.Highlight = 9802.
 * `useSubscribe` returns `{events, eose}` -- there is NO `loading`. There is no `loading` ANYWHERE.
-

@@ -15,8 +15,20 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
+import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const user = useNDKCurrentUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/(auth)/AuthChoiceScreen");
+    }
+  }, [user, router]);
 
   return (
     <Tabs
@@ -29,8 +41,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Home',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -48,10 +60,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="scan"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Scan',
+          tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="subscriptions"
+        options={{
+          title: 'Subscriptions',
+          tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <TabBarIcon name="cog" color={color} />,
         }}
       />
     </Tabs>

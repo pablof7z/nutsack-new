@@ -1,10 +1,13 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";
+import AuthChoiceScreen from "@/app/(auth)/AuthChoiceScreen";
 
 export default function RootLayout() {
   return (
     <>
       <Stack>
+        <Stack.Screen name="(auth)/AuthChoiceScreen" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="transactions/[id]" options={{ title: "Transaction Details" }} />
         <Stack.Screen name="subscriptions/[id]" options={{ title: "Subscription Details" }} />

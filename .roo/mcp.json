@@ -1,13 +1,17 @@
 {
-    "mcpServers": {
-        "tenex": {
-            "command": "npx",
-            "args": ["tenex-mcp"],
-            "alwaysAllow": ["publish"],
-            "env": {
-                "NSEC": "nsec12a0jymhk9nhhyswwjqzeujpv3as23lf0vu732cy27vzwgd3r6wjq04j3kv"
-            }
-        }
+  "mcpServers": {
+    "tenex": {
+      "command": "npx",
+      "args": [
+        "tenex-mcp"
+      ],
+      "alwaysAllow": [
+        "publish",
+        "publish_task_status_update"
+      ],
+      "env": {
+        "NSEC": "nsec12a0jymhk9nhhyswwjqzeujpv3as23lf0vu732cy27vzwgd3r6wjq04j3kv"
+      }
     }
+  }
 }
-
