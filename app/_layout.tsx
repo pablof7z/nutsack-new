@@ -2,6 +2,7 @@ import { Slot, useRouter, useSegments } from "expo-router"; // Import Slot, useR
 import { StatusBar } from "expo-status-bar";
 import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";
 import { useEffect } from "react"; // Import useEffect
+import NDKHeadless from "../components/NDKHeadless";
 
 // Note: Removed AuthChoiceScreen import as it's not directly used here
 
@@ -33,6 +34,7 @@ export default function RootLayout() {
   // based on the navigation state managed by the useEffect hook.
   return (
     <>
+      <NDKHeadless />
       {/* The Slot component renders the current child route */}
       <Slot />
       <StatusBar style="dark" />
