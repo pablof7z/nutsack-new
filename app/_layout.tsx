@@ -1,10 +1,10 @@
-import { Slot, useRouter, useSegments } from "expo-router"; // Import Slot, useRouter, useSegments
+import { Slot, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";
-import { useEffect } from "react"; // Import useEffect
+import { useEffect } from "react";
 import NDKHeadless from "../components/NDKHeadless";
-
-// Note: Removed AuthChoiceScreen import as it's not directly used here
+import DrawerContent from "../components/DrawerContent";
+import { Drawer } from "expo-router/drawer";
 
 export default function RootLayout() {
   const user = useNDKCurrentUser();
@@ -26,17 +26,34 @@ export default function RootLayout() {
     } else if (user && inAuthGroup) {
       // If the user is signed in and the initial segment is in the auth group.
       console.log("RootLayout: User found, redirecting to tabs...");
-      router.replace("/(tabs)"); // Or your main app screen
+      router.replace("/(tabs)");
     }
   }, [user, segments, router]);
 
-  // Render the Slot which will display the appropriate child route (auth or tabs)
-  // based on the navigation state managed by the useEffect hook.
+  // Only show the Drawer for authenticated users and non-auth routes
+  const inAuthGroup = segments[0] === "(auth)";
+
   return (
     <>
       <NDKHeadless />
-      {/* The Slot component renders the current child route */}
-      <Slot />
+      {user && !inAuthGroup ? (
+        <Drawer
+          drawerContent={() => <DrawerContent user={user} />}
+          screenOptions={{
+            drawerType: 'front',
+            swipeEdgeWidth: 40,
+            drawerStyle: {
+              width: 280,
+            },
+            drawerHideStatusBarOnOpen: false,
+            sceneContainerStyle: { backgroundColor: 'transparent' },
+          }}
+        >
+          <Slot />
+        </Drawer>
+      ) : (
+        <Slot />
+      )}
       <StatusBar style="dark" />
     </>
   );

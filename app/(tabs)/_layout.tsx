@@ -1,3 +1,4 @@
+import 'react-native-reanimated';
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
@@ -7,6 +8,9 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
+import UserAvatar from '@/components/UserAvatar';
+import { useNDKCurrentUser } from '@nostr-dev-kit/ndk-hooks';
+
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -15,22 +19,20 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-// Removed NDK/Router/useEffect imports as auth is handled in root layout
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  // Removed user and router hooks
-
-  // Removed useEffect for auth check
+  const user = useNDKCurrentUser();
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-      }}>
+        headerLeft: () => (
+          user ? <UserAvatar user={user} /> : null
+        ),
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

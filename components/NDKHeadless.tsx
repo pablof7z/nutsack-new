@@ -1,17 +1,10 @@
 import { useEffect } from "react";
 import {
-  NDKSessionLocalStorage,
   NDKSessionStorageAdapter,
   useNDKInit,
-  useNDKSessionMonitor
 } from "@nostr-dev-kit/ndk-hooks";
 import ndk from "../lib/ndk";
-
-// Set up session storage for the browser or native
-let sessionStorage: NDKSessionStorageAdapter | false = false;
-if (typeof window !== "undefined") {
-  sessionStorage = new NDKSessionLocalStorage();
-}
+import { useSessionMonitor } from "@nostr-dev-kit/ndk-mobile";
 
 /**
  * NDKHeadless initializes and connects the NDK singleton
@@ -21,7 +14,7 @@ if (typeof window !== "undefined") {
 export default function NDKHeadless() {
   const initNDK = useNDKInit();
 
-  useNDKSessionMonitor(sessionStorage, {
+  useSessionMonitor({
     profile: true,
     follows: true,
   });
