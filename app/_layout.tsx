@@ -1,3 +1,4 @@
+import "../unistyles";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-mobile";

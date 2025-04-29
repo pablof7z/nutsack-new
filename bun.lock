@@ -5,6 +5,7 @@
       "name": "nutsack",
       "dependencies": {
         "@expo/vector-icons": "^14.0.2",
+        "@legendapp/list": "^1.0.7",
         "@nostr-dev-kit/ndk": "^2.14.5",
         "@nostr-dev-kit/ndk-hooks": "^1.1.24",
         "@nostr-dev-kit/ndk-mobile": "^0.7.7",
@@ -420,6 +421,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.0", "", {}, "sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.25", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ=="],
+
+    "@legendapp/list": ["@legendapp/list@1.0.7", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-8BDb1ONXECuUWStNZkE+9yqQ3qdrzmNU+G6QFPKAEK5zX1tIw4Xtfo+DN8tAoAOrmroVm5rA9sDFVySuPF+LYA=="],
 
     "@noble/ciphers": ["@noble/ciphers@0.5.3", "", {}, "sha512-B0+6IIHiqEs3BPMT0hcRmHvEj2QHOLu+uwt+tqDDeVd0oyVzh7BPrDcPjRnV1PV/5LaknXJJQvOuRGR0zQJz+w=="],
 

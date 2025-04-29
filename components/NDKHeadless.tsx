@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   NDKSessionStorageAdapter,
   useNDKInit,
+  useNDKSessionMonitor,
 } from "@nostr-dev-kit/ndk-hooks";
 import ndk from "../lib/ndk";
-import { useSessionMonitor } from "@nostr-dev-kit/ndk-mobile";
+import { NDKSessionExpoSecureStore, useSessionMonitor } from "@nostr-dev-kit/ndk-mobile";
 
 /**
  * NDKHeadless initializes and connects the NDK singleton
@@ -13,8 +14,9 @@ import { useSessionMonitor } from "@nostr-dev-kit/ndk-mobile";
  */
 export default function NDKHeadless() {
   const initNDK = useNDKInit();
+  const sessionStorage = useRef(new NDKSessionExpoSecureStore());
 
-  useSessionMonitor({
+  useNDKSessionMonitor(sessionStorage.current, {
     profile: true,
     follows: true,
   });
@@ -22,8 +24,6 @@ export default function NDKHeadless() {
   useEffect(() => {
     ndk.connect();
     initNDK(ndk);
-    // Only run once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initNDK]);
 
   return null;

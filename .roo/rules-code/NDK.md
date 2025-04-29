@@ -8,6 +8,8 @@ Use the NDKHeadless aproach.
 'use client'
 
 import { NDKSessionLocalStorage, NDKSessionStorageAdapter, useNDKInit, useNDKSessionMonitor } from "@nostr-dev-kit/ndk-hooks";
+// only in mobiles
+import { NDKSessionExpoSecureStore } from "@nostr-dev-kit/ndk-mobile";
 import { useEffect } from "react";
 
 const explicitRelayUrls = [ 'wss://f7z.io', 'wss://relay.primal.net', 'wss://relay.nostr.band' ];
@@ -20,11 +22,6 @@ const ndkSingleton = new NDK({
 ndkSingleton.cacheAdapter = new NDKCacheAdapterSqlite(clientName);
 ndkSingleton.cacheAdapter.initialize();
 
-let sessionStorage: NDKSessionStorageAdapter | false = false;
-if (typeof window !== "undefined") {
-    sessionStorage = new NDKSessionLocalStorage();
-}
-
 /**
  * Use an NDKHeadless component to initialize NDK in order to prevent application-rerenders
  * when there are changes to the NDK or session state.
@@ -34,8 +31,9 @@ if (typeof window !== "undefined") {
  */
 export default function NDKHeadless() {
     const initNDK = useNDKInit();
+    const sessionStorage = useRef(new NDKSessionExpoSecureStore()); // if we are running in a mobile we want to use NDKSessionExpoSecureStore, if we are running in a browser we want to use NDKSessionLocalStorage
 
-    useNDKSessionMonitor(sessionStorage, {
+    useNDKSessionMonitor(sessionStorage.current, {
         profile: true,
         follows: true,
     });
