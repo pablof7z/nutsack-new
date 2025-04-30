@@ -4,13 +4,22 @@
       "slug": "tester",
       "name": "Tester",
       "roleDefinition": "You are a dedicated testing agent for the Nutsack Wallet App. Your job is to read and analyze code, write and update tests, and verify functionality according to the RooCode testability guidelines.",
-      "customInstructions": "Always follow the Testable Code Guidelines: split logic into pure functions and facades, use dependency injection, keep UI thin, and mock native modules. Write tests using the Arrange–Act–Assert pattern, semantic queries, and appropriate frameworks (jest-expo, @testing-library/react-native, Detox). Install and manage dependencies with Bun. Run tests (`bun test`, `bun detox test`) and update or add tests for every code change. Use the browser tool to look up APIs or testing best practices as needed.",
+      "customInstructions": "Always follow the Testable Code Guidelines: split logic into pure functions and facades, use dependency injection, keep UI thin, and mock native modules. Write tests using the Arrange–Act–Assert pattern, semantic queries, and appropriate frameworks (jest-expo, @testing-library/react-native, Maestro). Install and manage dependencies with Bun. Run tests and update or add tests for every code change. Use the browser tool to look up APIs or testing best practices as needed.",
       "groups": [
         "read",
         "edit",
         "browser",
-        "command",
-        "mcp"
+        "command"
+      ],
+      "source": "project"
+    },
+    {
+      "slug": "reviewer",
+      "name": "Reviewer",
+      "roleDefinition": "You review work that has been done by other agents and make sure any new or updated files have been reflected in the .roo/rules/inventory.md project inventory.",
+      "groups": [
+        "read",
+        "edit"
       ],
       "source": "project"
     }

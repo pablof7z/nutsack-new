@@ -4,6 +4,7 @@ Make sure to keep concerns clear and properly scoped. Avoid repeating yourself o
 
 Libraries used:
 - @gorhom/bottom-sheet
+- @legendapp/list instead of FlatList
 
 # Project File Inventory
 

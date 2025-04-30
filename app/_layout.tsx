@@ -6,6 +6,9 @@ import { useEffect } from "react";
 import NDKHeadless from "../components/NDKHeadless";
 import DrawerContent from "../components/DrawerContent";
 import { Drawer } from "expo-router/drawer";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function RootLayout() {
   const user = useNDKCurrentUser();
@@ -34,29 +37,35 @@ export default function RootLayout() {
   // Only show the Drawer for authenticated users and non-auth routes
   const inAuthGroup = segments[0] === "(auth)";
 
+  // Import BottomSheetModalProvider
+  // (at the top of the file, add: import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";)
+  // Wrap the app in BottomSheetModalProvider
+
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NDKHeadless />
-      {user && !inAuthGroup ? (
-        <Drawer
-          drawerContent={() => <DrawerContent user={user} />}
-          screenOptions={{
-            headerShown: false,
-            drawerType: 'front',
-            swipeEdgeWidth: 40,
-            drawerStyle: {
-              width: 280,
-            },
-            drawerHideStatusBarOnOpen: false,
-            sceneContainerStyle: { backgroundColor: 'transparent' },
-          }}
-        >
+      <BottomSheetModalProvider>
+        {user && !inAuthGroup ? (
+          <Drawer
+            drawerContent={() => <DrawerContent user={user} />}
+            screenOptions={{
+              headerShown: false,
+              drawerType: 'front',
+              swipeEdgeWidth: 40,
+              drawerStyle: {
+                width: 280,
+              },
+              drawerHideStatusBarOnOpen: false,
+              // sceneContainerStyle: { backgroundColor: 'transparent' }, // Removed: not a valid DrawerNavigationOptions prop
+            }}
+          >
+            <Slot />
+          </Drawer>
+        ) : (
           <Slot />
-        </Drawer>
-      ) : (
-        <Slot />
-      )}
-      <StatusBar style="dark" />
-    </>
+        )}
+        <StatusBar style="dark" />
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -1,0 +1,48 @@
+# Welcome Screen Flow Test
+appId: com.pablof7z.nutsack
+---
+- launchApp
+
+# Step 1: Verify the welcome screen is visible
+- waitForAnimationToEnd
+- runScript: sleep 3
+- assertVisible: "welcome_screen"
+- takeScreenshot:
+    file: "welcome-screen"
+- log: "Welcome screen is visible"
+
+# Step 2: Check for the welcome title text
+- assertVisible: "welcome_screen_title"
+- assertVisible: 'Welcome to Nutsack'
+- log: "Welcome title text verified"
+
+# Step 3: Verify both account buttons are present
+- assertVisible: "welcome_screen_create_account_button"
+- assertVisible: "welcome_screen_import_account_button"
+- log: "Both account buttons are visible"
+
+# Step 4: Test navigation to Create Account screen
+- takeScreenshot:
+    file: "before-create-account-tap"
+- tapOn: "welcome_screen_create_account_button"
+- runScript: sleep 2
+- assertVisible: 'Create Account'
+- takeScreenshot:
+    file: "create-account-screen"
+- log: "Successfully navigated to Create Account screen"
+- pressBack
+- runScript: sleep 2
+
+# Step 5: Test navigation to Import Account screen
+- assertVisible: "welcome_screen"
+- takeScreenshot:
+    file: "before-import-account-tap"
+- tapOn: "welcome_screen_import_account_button"
+- runScript: sleep 2
+- assertVisible: 'Import Account'
+- takeScreenshot:
+    file: "import-account-screen"
+- log: "Successfully navigated to Import Account screen"
+
+# Step 6: Test completed
+- log: "Welcome screen tests completed successfully"

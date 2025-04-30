@@ -1,0 +1,57 @@
+appId: com.pablof7z.nutsack
+---
+# Launch the app and clear its state
+- launchApp:
+    clearState: true
+
+# Verify welcome title is visible
+- assertVisible:
+    text: "Welcome to Nutsack"
+
+# Verify welcome screen is visible
+- assertVisible:
+    id: "welcome-screen"
+
+# Capture welcome screen
+- takeScreenshot:
+    file: "welcome-screen"
+
+# Verify create account button is visible
+- assertVisible:
+    id: "create-account-button"
+
+# Verify import account button is visible
+- assertVisible:
+    id: "import-account-button"
+
+# Test navigation to Create Account screen
+# Tap on Create Account button
+- tapOn:
+    id: "create-account-button"
+
+# Verify we navigated to Create Account screen
+- assertVisible:
+    text: "Create New Account"
+
+# Capture create account screen
+- takeScreenshot:
+    file: "create-account-screen"
+
+# Navigate back to welcome screen
+- back
+
+# Verify we're back at welcome screen
+- assertVisible:
+    text: "Welcome to Nutsack"
+
+# Tap on Import Account button
+- tapOn:
+    id: "import-account-button"
+
+# Verify we navigated to Import Account screen
+- assertVisible:
+    text: "Import Account"
+
+# Capture import account screen
+- takeScreenshot:
+    file: "import-account-screen"

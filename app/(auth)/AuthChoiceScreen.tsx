@@ -94,7 +94,7 @@ export default function AuthChoiceScreen() {
   };
 
   return (
-    <View style={styles.root}>
+    <View style={styles.root} testID="welcome_screen">
       <LinearGradient
         colors={["#0D0D0D", "#16213E", "#1A1A2E"]}
         locations={[0, 0.5, 1]}
@@ -152,6 +152,7 @@ export default function AuthChoiceScreen() {
               transform: [{ translateY: headerTranslate }],
             },
           ]}
+          testID="welcome_screen_title"
         >
           Welcome to Nutsack
         </Animated.Text>
@@ -169,6 +170,7 @@ export default function AuthChoiceScreen() {
                 onPressOut={handlePrimaryPressOut}
                 onPress={() => router.push("/(auth)/CreateAccountScreen")}
                 android_ripple={{ color: "#fff" }}
+                testID="welcome_screen_create_account_button"
               >
                 <Text style={styles.primaryButtonText}>CREATE ACCOUNT</Text>
               </Pressable>
@@ -182,6 +184,7 @@ export default function AuthChoiceScreen() {
               ]}
               onPress={() => router.push("/(auth)/ImportAccountScreen")}
               android_ripple={{ color: HEADER_COLOR }}
+              testID="welcome_screen_import_account_button"
             >
               <Text style={styles.secondaryButtonText}>IMPORT ACCOUNT</Text>
             </Pressable>
