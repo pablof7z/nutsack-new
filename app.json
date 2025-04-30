@@ -33,7 +33,8 @@
       "expo-router",
       "expo-dev-client",
       "expo-sqlite",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@config-plugins/detox"
     ],
     "experiments": {
       "typedRoutes": true

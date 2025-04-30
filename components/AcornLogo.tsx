@@ -17,6 +17,7 @@ export default function AcornLogo({
 }: AcornLogoProps) {
   return (
     <View
+      testID="acorn-logo"
       style={[
         {
           width: size,
