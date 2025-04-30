@@ -225,3 +225,4 @@ ndk-react doesn't exist. Never try to to use it. NEVER use a React Context API t
 * All kind numbers are valid and none of them are more correct than others, there is no "community-defined kinds" vs "core NIP specifications", all kind numbers are equally valid.
 * The enum `NDKKind` does define many different kind numbers like NDKKind.Highlight = 9802.
 * `useSubscribe` returns `{events, eose}` -- there is NO `loading`. There is no `loading` ANYWHERE.
+

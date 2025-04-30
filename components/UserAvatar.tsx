@@ -4,6 +4,7 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 import type { NDKUser } from "@nostr-dev-kit/ndk";
 import { useNavigation } from "expo-router";
 import { DrawerActions } from "@react-navigation/native";
+import { useProfileValue } from "@nostr-dev-kit/ndk-hooks";
 
 type UserAvatarProps = {
   user: NDKUser | undefined | null;
@@ -58,9 +59,10 @@ function getInitials(user: NDKUser | undefined | null): string {
 
 const UserAvatar: React.FC<UserAvatarProps> = memo(({ user, size = AVATAR_SIZE }) => {
   const { styles: s } = useStyles(styles);
+  const profile = useProfileValue(user?.pubkey);
   const navigation = useNavigation();
 
-  const imageUrl = user?.profile?.image;
+  const imageUrl = profile?.picture;
 
   const handlePress = () => {
     // Toggle the drawer navigation using DrawerActions (compatible with expo-router/drawer)

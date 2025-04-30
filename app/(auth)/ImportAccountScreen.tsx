@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, Pressable, View, Text, Easing, Dimensions, TextInput } from "react-native";
+import { Animated, Pressable, View, Text, Easing, Dimensions, TextInput, ActivityIndicator } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 import { LinearGradient } from "expo-linear-gradient";
 import AcornLogo from "../../components/AcornLogo";
 import { router } from "expo-router";
+import { NDKPrivateKeySigner, NDKNip46Signer, useNDKSessionLogin } from "@nostr-dev-kit/ndk-mobile";
+import ndk from "../../lib/ndk";
 
 // Neon color options
 const NEON_PINK = "#E94560";
@@ -31,6 +33,39 @@ export default function ImportAccountScreen() {
 
   // Input state
   const [importValue, setImportValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const ndkLogin = useNDKSessionLogin();
+
+  const handleImport = async () => {
+    setError(null);
+    const value = importValue.trim();
+    if (!value) {
+      setError("Please enter your nsec or bunker:// key.");
+      return;
+    }
+
+    let signer = null;
+    if (value.startsWith("nsec1")) {
+      signer = new NDKPrivateKeySigner(value);
+    } else if (value.startsWith("bunker://")) {
+      signer = new NDKNip46Signer(ndk, value);
+    } else {
+      setError("Invalid key format. Please enter a valid nsec or bunker:// key.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await ndkLogin(signer);
+      router.replace("/(tabs)");
+    } catch (e: any) {
+      setError(e?.message || "Failed to import account. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     Animated.sequence([
@@ -162,23 +197,28 @@ export default function ImportAccountScreen() {
 
         {/* Button */}
         <View style={styles.buttonGroup}>
+          {error ? (
+            <Text style={{ color: "#E94560", marginBottom: 8, textAlign: "center" }}>{error}</Text>
+          ) : null}
           <Animated.View style={{ opacity: primaryBtnOpacity }}>
             <Animated.View style={{ transform: [{ scale: primaryScale }] }}>
               <Pressable
                 style={({ pressed }) => [
                   styles.primaryButton,
                   pressed && styles.primaryButtonPressed,
+                  isLoading && { opacity: 0.7 }
                 ]}
                 onPressIn={handlePrimaryPressIn}
                 onPressOut={handlePrimaryPressOut}
-                onPress={() => {
-                  // TODO: Implement import logic
-                  router.replace("/(tabs)");
-                }}
+                onPress={handleImport}
                 android_ripple={{ color: "#fff" }}
-                disabled={!importValue.trim()}
+                disabled={isLoading || !importValue.trim()}
               >
-                <Text style={styles.primaryButtonText}>IMPORT</Text>
+                {isLoading ? (
+                  <ActivityIndicator color="#0D0D0D" />
+                ) : (
+                  <Text style={styles.primaryButtonText}>IMPORT</Text>
+                )}
               </Pressable>
             </Animated.View>
           </Animated.View>

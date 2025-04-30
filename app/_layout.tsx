@@ -41,6 +41,7 @@ export default function RootLayout() {
         <Drawer
           drawerContent={() => <DrawerContent user={user} />}
           screenOptions={{
+            headerShown: false,
             drawerType: 'front',
             swipeEdgeWidth: 40,
             drawerStyle: {

@@ -2,9 +2,10 @@ import React, { useCallback } from "react";
 import { View, Text, Pressable } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 import type { NDKUser } from "@nostr-dev-kit/ndk";
-import { useNDKSessionLogout } from "@nostr-dev-kit/ndk-mobile";
+import { useNDKSessionLogout, useProfileValue } from "@nostr-dev-kit/ndk-mobile";
 import AcornLogo from "./AcornLogo";
 import UserAvatar from "./UserAvatar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type DrawerContentProps = {
   user: NDKUser | undefined | null;
@@ -19,7 +20,6 @@ const styles = createStyleSheet({
     justifyContent: "space-between",
   },
   topSection: {
-    alignItems: "center",
     marginBottom: 32,
   },
   logoRow: {
@@ -28,8 +28,8 @@ const styles = createStyleSheet({
     marginBottom: 24,
   },
   logo: {
-    width: 36,
-    height: 36,
+    width: 12,
+    height: 12,
     marginRight: 10,
   },
   appName: {
@@ -39,12 +39,14 @@ const styles = createStyleSheet({
     letterSpacing: 1,
   },
   profileSection: {
+    flexDirection: 'row',
     alignItems: "center",
     marginBottom: 16,
   },
   userName: {
     marginTop: 12,
     fontSize: 18,
+    marginLeft: 8,
     fontWeight: "600",
     color: "#333",
     textAlign: "center",
@@ -83,22 +85,26 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ user }) => {
     }
   }, [ndkLogout]);
 
+  const profile = useProfileValue(user?.pubkey);
+
   const displayName =
-    user?.profile?.displayName ||
-    user?.profile?.name ||
-    user?.profile?.username ||
+    profile?.displayName ||
+    profile?.name ||
+    profile?.username ||
     "User";
+  
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={s.container}>
+    <View style={[s.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
       <View>
         <View style={s.topSection}>
           <View style={s.logoRow}>
-            <AcornLogo style={s.logo} />
+            <AcornLogo style={s.logo} size={24} />
             <Text style={s.appName}>Acorn</Text>
           </View>
           <View style={s.profileSection}>
-            <UserAvatar user={user} size={64} />
+            <UserAvatar user={user} size={48} />
             <Text style={s.userName} numberOfLines={1} ellipsizeMode="tail">
               {displayName}
             </Text>
